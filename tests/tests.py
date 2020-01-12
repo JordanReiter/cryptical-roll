@@ -5,23 +5,23 @@ from crypt_roll.utils import CryptRoll
 class TestParse(TestCase):
     def test_simple_d6(self):
         result = CryptRoll().parse_roll('d6')
-        self.assertEqual(result, [6])
+        self.assertEqual(result, ([6], None))
 
     def test_simple_d8(self):
         result = CryptRoll().parse_roll('d8')
-        self.assertEqual(result, [8])
+        self.assertEqual(result, ([8], None))
 
     def test_simple_d20(self):
         result = CryptRoll().parse_roll('d20')
-        self.assertEqual(result, [20])
+        self.assertEqual(result, ([20], None))
     
     def test_multiple_dice_d6(self):
         result = CryptRoll().parse_roll('2d6')
-        self.assertEqual(result, [6, 6])
+        self.assertEqual(result, ([6, 6], None))
     
     def test_multiple_dice_4d10(self):
         result = CryptRoll().parse_roll('4d10')
-        self.assertEqual(result, [10, 10, 10, 10])
+        self.assertEqual(result, ([10, 10, 10, 10], None))
 
     def test_simple_d6_modifier_plus_4(self):
         result = CryptRoll().parse_roll('d6+4')

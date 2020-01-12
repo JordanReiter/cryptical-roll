@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 import argparse
 import sys
+import logging
 
 from crypt_roll.utils import CryptRoll
+from crypt_roll.log import CryptRollLogger
 
 
 LOG_LEVELS = {
-    None: 30, # warn
-    1: 20, # info
-    2: 15, # egg
-    3: 10, # debug
+    None: logging.WARNING, # warn
+    1: logging.INFO, # info
+    2: CryptRollLogger.EGG_LEVEL, # egg
+    3: logging.DEBUG, # debug
     
 }
 
