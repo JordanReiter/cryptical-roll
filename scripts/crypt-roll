@@ -1,0 +1,46 @@
+#!/usr/bin/env python3
+import argparse
+import sys
+
+from crypt_roll.utils import CryptRoll
+
+
+LOG_LEVELS = {
+    None: 30, # warn
+    1: 20, # info
+    2: 15, # egg
+    3: 10, # debug
+    
+}
+
+
+def main():
+    parser = argparse.ArgumentParser(description='Cryptographically strong dice rolls.')
+    parser.add_argument('rolls', metavar='N', type=str, nargs='+',
+                       help='dice rolls')
+    parser.add_argument('--verbose', '-v', action='count')
+    parser.add_argument('--advantage', '-a', dest='roll_with', action='append_const', const='advantage')
+    parser.add_argument('--disadvantage', '-d', dest='roll_with', action='append_const', const='disadvantage')
+    parser.add_argument('--label', type=str)
+    args = parser.parse_args()
+    verbosity = args.verbose
+    log_level = LOG_LEVELS.get(verbosity)
+    roll_with = args.roll_with
+    roller = CryptRoll(log_level)
+    rolls = args.rolls
+    if roll_with and 'advantage' in roll_with and 'disadvantage' in roll_with:
+        roller.log.egg("OK, so with advantage and disadvantage, so it's just a straight roll.")
+        roll_with = None
+    elif roll_with:
+        roll_with = roll_with[0]
+    results = []
+    for rr in rolls:
+        dice, modifier  = roller.parse_roll(rr)
+        results.append(
+            roller.get_roll_result(dice, modifier=modifier, roll_with=roll_with)
+        )
+    sys.stdout.write(' '.join(str(rr) for rr in results))
+    
+    
+if __name__ == '__main__':
+    main()
