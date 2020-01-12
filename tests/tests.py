@@ -95,6 +95,24 @@ class TestRoll(TestCase):
             output = CryptRoll().get_roll_result([dice_type], modifier)
         self.assertEqual(output, 6)
 
+    def test_get_roll_result_simple_d20_with_advantage(self):
+        dice_type = 20
+        expected_roll = 18
+        with mock.patch('secrets.randbelow') as m:
+            # function should add one to random value
+            m.side_effect = [7, 17]
+            output = CryptRoll().get_roll_result([dice_type], roll_with="advantage")
+        self.assertEqual(output, expected_roll)
+
+    def test_get_roll_result_simple_d20_with_disadvantage(self):
+        dice_type = 20
+        expected_roll = 8
+        with mock.patch('secrets.randbelow') as m:
+            # function should add one to random value
+            m.side_effect = [7, 17]
+            output = CryptRoll().get_roll_result([dice_type], roll_with="disadvantage")
+        self.assertEqual(output, expected_roll)
+
     def test_get_roll_result_simple_d6_minus_modifier(self):
         dice_type = 6
         modifier = -1
